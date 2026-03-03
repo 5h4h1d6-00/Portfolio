@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Snake Game - Water Edition</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ========================= */
+/* 🌊 WATER THEME DESIGN */
+/* ========================= */
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    font-family:Segoe UI, sans-serif;
+    background:linear-gradient(-45deg,#001f3f,#003f7f,#005f9f,#007fdf);
+    background-size:400% 400%;
+    animation:waterFlow 10s ease infinite;
+    color:white;
+}
+
+@keyframes waterFlow{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+h1{
+    margin-bottom:10px;
+    letter-spacing:2px;
+}
+
+canvas{
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(10px);
+    border-radius:15px;
+    box-shadow:0 0 30px rgba(0,200,255,0.7);
+}
+
+.controls{
+    margin-top:15px;
+}
+
+button{
+    padding:10px 20px;
+    margin:5px;
+    border:none;
+    border-radius:20px;
+    background:linear-gradient(90deg,#00c6ff,#0072ff);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 15px cyan;
+}
+
+#gameOver{
+    position:absolute;
+    background:rgba(0,0,0,0.8);
+    padding:30px;
+    border-radius:15px;
+    display:none;
+    text-align:center;
+}
+
+#score{
+    font-size:18px;
+    margin-bottom:10px;
+}
+</style>
+</head>
+<body>
+
+<h1>🌊 Snake Game</h1>
+<div id="score">Score: 0</div>
+
+<canvas id="game" width="400" height="400"></canvas>
+
+<div class="controls">
+    <button onclick="restartGame()">Restart</button>
+    <button onclick="goBack()">Back to Portfolio</button>
+</div>
+
+<div id="gameOver">
+    <h2>Game Over</h2>
+    <button onclick="restartGame()">Play Again</button>
+</div>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let snake, food, dx, dy, score, gameInterval;
+
+function init(){
+    snake = [{x:200,y:200}];
+    food = randomFood();
+    dx = 20;
+    dy = 0;
+    score = 0;
+    document.getElementById("score").innerText = "Score: " + score;
+    document.getElementById("gameOver").style.display="none";
+}
+
+function randomFood(){
+    return {
+        x: Math.floor(Math.random()*20)*20,
+        y: Math.floor(Math.random()*20)*20
+    };
+}
+
+function draw(){
+    ctx.clearRect(0,0,400,400);
+
+    /* Draw snake */
+    ctx.fillStyle="#00ffff";
+    snake.forEach(part=>{
+        ctx.fillRect(part.x,part.y,20,20);
+    });
+
+    /* Draw food */
+    ctx.fillStyle="#00ff88";
+    ctx.fillRect(food.x,food.y,20,20);
+
+    let head = {x:snake[0].x+dx,y:snake[0].y+dy};
+
+    /* Wall collision */
+    if(head.x<0 || head.x>=400 || head.y<0 || head.y>=400){
+        gameOver();
+        return;
+    }
+
+    /* Self collision */
+    for(let i=0;i<snake.length;i++){
+        if(head.x===snake[i].x && head.y===snake[i].y){
+            gameOver();
+            return;
+        }
+    }
+
+    snake.unshift(head);
+
+    /* Eat food */
+    if(head.x===food.x && head.y===food.y){
+        score++;
+        document.getElementById("score").innerText = "Score: " + score;
+        food = randomFood();
+    } else {
+        snake.pop();
+    }
+}
+
+function gameOver(){
+    clearInterval(gameInterval);
+    document.getElementById("gameOver").style.display="block";
+}
+
+function restartGame(){
+    clearInterval(gameInterval);
+    init();
+    gameInterval = setInterval(draw,100);
+}
+
+function goBack(){
+    window.location.href = "../index.html";
+}
+
+document.addEventListener("keydown",e=>{
+    if(e.key==="ArrowUp" && dy===0){dx=0;dy=-20;}
+    if(e.key==="ArrowDown" && dy===0){dx=0;dy=20;}
+    if(e.key==="ArrowLeft" && dx===0){dx=-20;dy=0;}
+    if(e.key==="ArrowRight" && dx===0){dx=20;dy=0;}
+});
+
+init();
+gameInterval = setInterval(draw,100);
+</script>
+
+</body>
+</html>

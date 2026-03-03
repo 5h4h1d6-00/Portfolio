@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pro Chess - Developer Edition</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    font-family:Segoe UI, sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+h1{
+    margin-top:20px;
+}
+
+#topBar{
+    display:flex;
+    gap:20px;
+    margin:15px;
+    align-items:center;
+}
+
+select, button{
+    padding:8px 15px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button{
+    background:#00c6ff;
+    color:white;
+}
+
+.board{
+    display:grid;
+    grid-template-columns:repeat(8,70px);
+    margin:20px;
+}
+
+.square{
+    width:70px;
+    height:70px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    cursor:pointer;
+}
+
+.white{background:#f0d9b5;}
+.black{background:#b58863;}
+
+.selected{
+    outline:3px solid yellow;
+}
+
+#status{
+    margin-top:10px;
+}
+
+.timer{
+    font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<h1>♟ Pro Chess Game</h1>
+
+<div id="topBar">
+    <select id="timeSelect">
+        <option value="300">5 Minutes</option>
+        <option value="600">10 Minutes</option>
+        <option value="900">15 Minutes</option>
+    </select>
+    <button onclick="startGame()">Start</button>
+    <button onclick="restartGame()">Restart</button>
+    <button onclick="goBack()">Back</button>
+</div>
+
+<div class="timer">White: <span id="whiteTime">00:00</span></div>
+<div class="timer">Black: <span id="blackTime">00:00</span></div>
+
+<div class="board" id="board"></div>
+
+<div id="status"></div>
+
+<script>
+const boardElement = document.getElementById("board");
+let board = [];
+let selected = null;
+let currentPlayer = "white";
+let whiteTimer, blackTimer, interval;
+let whiteTimeLeft, blackTimeLeft;
+
+const pieces = {
+r:"♜", n:"♞", b:"♝", q:"♛", k:"♚", p:"♟",
+R:"♖", N:"♘", B:"♗", Q:"♕", K:"♔", P:"♙"
+};
+
+function initBoard(){
+board = [
+["r","n","b","q","k","b","n","r"],
+["p","p","p","p","p","p","p","p"],
+["","","","","","","",""],
+["","","","","","","",""],
+["","","","","","","",""],
+["","","","","","","",""],
+["P","P","P","P","P","P","P","P"],
+["R","N","B","Q","K","B","N","R"]
+];
+drawBoard();
+}
+
+function drawBoard(){
+boardElement.innerHTML="";
+for(let r=0;r<8;r++){
+for(let c=0;c<8;c++){
+let square=document.createElement("div");
+square.className="square "+((r+c)%2===0?"white":"black");
+square.dataset.row=r;
+square.dataset.col=c;
+square.innerText=pieces[board[r][c]] || "";
+square.onclick=()=>selectSquare(r,c);
+boardElement.appendChild(square);
+}
+}
+}
+
+function selectSquare(r,c){
+if(selected){
+movePiece(selected.r,selected.c,r,c);
+selected=null;
+drawBoard();
+return;
+}
+if(board[r][c]!==""){
+if(currentPlayer==="white" && board[r][c]===board[r][c].toUpperCase() ||
+currentPlayer==="black" && board[r][c]===board[r][c].toLowerCase()){
+selected={r,c};
+}
+}
+}
+
+function movePiece(r1,c1,r2,c2){
+let piece=board[r1][c1];
+if(!isValidMove(piece,r1,c1,r2,c2)) return;
+
+board[r2][c2]=piece;
+board[r1][c1]="";
+
+if(isCheckmate(opponent())){
+document.getElementById("status").innerText=currentPlayer+" wins by Checkmate!";
+clearInterval(interval);
+return;
+}
+
+currentPlayer = opponent();
+}
+
+function opponent(){
+return currentPlayer==="white"?"black":"white";
+}
+
+function isValidMove(piece,r1,c1,r2,c2){
+let dr=r2-r1;
+let dc=c2-c1;
+
+if(piece.toLowerCase()==="p"){
+let direction = piece==="P"?-1:1;
+if(dc===0 && dr===direction && board[r2][c2]==="") return true;
+if(Math.abs(dc)===1 && dr===direction && board[r2][c2]!=="") return true;
+}
+if(piece.toLowerCase()==="r"){
+if(r1===r2 || c1===c2) return true;
+}
+if(piece.toLowerCase()==="n"){
+if((Math.abs(dr)===2 && Math.abs(dc)===1) ||
+(Math.abs(dr)===1 && Math.abs(dc)===2)) return true;
+}
+if(piece.toLowerCase()==="b"){
+if(Math.abs(dr)===Math.abs(dc)) return true;
+}
+if(piece.toLowerCase()==="q"){
+if(r1===r2 || c1===c2 || Math.abs(dr)===Math.abs(dc)) return true;
+}
+if(piece.toLowerCase()==="k"){
+if(Math.abs(dr)<=1 && Math.abs(dc)<=1) return true;
+}
+return false;
+}
+
+function isCheckmate(color){
+for(let r=0;r<8;r++){
+for(let c=0;c<8;c++){
+if(board[r][c].toLowerCase()==="k"){
+if(color==="white" && board[r][c]==="K") return false;
+if(color==="black" && board[r][c]==="k") return false;
+}
+}
+}
+return true;
+}
+
+function startGame(){
+let time = parseInt(document.getElementById("timeSelect").value);
+whiteTimeLeft = time;
+blackTimeLeft = time;
+updateTimers();
+clearInterval(interval);
+interval = setInterval(updateClock,1000);
+}
+
+function updateClock(){
+if(currentPlayer==="white"){
+whiteTimeLeft--;
+if(whiteTimeLeft<=0){ alert("Black wins on time"); clearInterval(interval);}
+}else{
+blackTimeLeft--;
+if(blackTimeLeft<=0){ alert("White wins on time"); clearInterval(interval);}
+}
+updateTimers();
+}
+
+function updateTimers(){
+document.getElementById("whiteTime").innerText=formatTime(whiteTimeLeft);
+document.getElementById("blackTime").innerText=formatTime(blackTimeLeft);
+}
+
+function formatTime(sec){
+let m=Math.floor(sec/60);
+let s=sec%60;
+return (m<10?"0":"")+m+":"+(s<10?"0":"")+s;
+}
+
+function restartGame(){
+clearInterval(interval);
+initBoard();
+document.getElementById("status").innerText="";
+}
+
+function goBack(){
+window.location.href="../index.html";
+}
+
+initBoard();
+</script>
+
+</body>
+</html>

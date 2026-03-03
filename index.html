@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Shahid Saleem - Futuristic Developer Portfolio | Frontend & Logic Based Application Developer from India">
+<meta name="keywords" content="Shahid Saleem, Web Developer, Frontend Developer, JavaScript Developer, Game Developer">
+<meta name="author" content="Shahid Saleem">
+<title>Shahid Saleem</title>
+
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loader">
+  <h1>Initializing Developer Matrix...</h1>
+</div>
+
+<!-- Scroll Progress -->
+<div id="scrollBar"></div>
+
+<!-- Custom Cursor -->
+<div class="cursor"></div>
+
+<header>
+  <h1 class="logo">Shahid Saleem</h1>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+    <button id="themeToggle">Theme</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h2>Frontend & Logic-Based Application Developer</h2>
+  <p>Building Interactive Digital Experiences</p>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="glass">
+  <h2>About & Vision</h2>
+  <p>
+  Shahid Saleem is a self-taught Frontend & Logic-Based Application Developer.
+  Currently mastering advanced HTML5, CSS3, and JavaScript.
+  Has working knowledge of PHP, C, C++, Python, Kotlin, and XML.
+  Strong foundation in logical reasoning, Boolean algebra, and mathematical problem solving.
+  Passionate about building interactive browser-based games and responsive web applications.
+  Focused on clean UI/UX design and performance optimization.
+  Continuously learning modern web standards and scalable design architecture.
+  </p>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <h2>Technical Skills</h2>
+
+  <div class="skill">
+    <h3>HTML5</h3>
+    <div class="bar"><div style="width:95%"></div></div>
+  </div>
+
+  <div class="skill">
+    <h3>CSS3 (Flexbox, Grid, Animations)</h3>
+    <div class="bar"><div style="width:90%"></div></div>
+  </div>
+
+  <div class="skill">
+    <h3>JavaScript (ES6+, DOM)</h3>
+    <div class="bar"><div style="width:85%"></div></div>
+  </div>
+
+  <div class="skill">
+    <h3>PHP</h3>
+    <div class="bar"><div style="width:70%"></div></div>
+  </div>
+
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <h2>Interactive Projects</h2>
+
+  <div class="filter-buttons">
+    <button onclick="filteroptionion('all')">All</button>
+    <button onclick="filteroptionion('game')">Games</button>
+    <button onclick="filteroptionion('app')">Apps</button>
+    <button onclick="filteroptionion('web')">Websites</button>
+  </div>
+
+  <div class="project-container">
+
+    <div class="card game">
+      <h3>Snake Game</h3>
+      <p>Canvas-based logic implementation</p>
+      <button onclick="openGame('snake')">Play</button>
+    </div>
+
+    <div class="card game">
+      <h3>Tic Tac Toe</h3>
+      <p>Interactive turn-based logic</p>
+      <button onclick="openGame('tictactoe')">Play Game</button>
+    </div>
+    <div class="card game">
+      <h3>Chess</h3>
+      <p>Interactive turn-based logic</p>
+      <button onclick="openGame('chess')">Play Game</button>
+    </div>
+    <div class="card game">
+      <h3>Ludo</h3>
+      <p>Interactive turn-based logic</p>
+      <button onclick="openGame('ludo')">Play Game</button>
+    </div>
+
+    <div class="card app">
+      <h3>To-Do App</h3>
+      <p>Task manager with LocalStorage</p>
+      <button>Preview</button>
+    </div>
+
+    <div class="card web">
+      <h3>Responsive Landing Page</h3>
+      <p>Modern multi-section layout</p>
+      <button>Preview</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div>
+    <h3 class="counter" data-target="50">0</h3>
+    <p>Projects Built</p>
+  </div>
+  <div>
+    <h3 class="counter" data-target="10">0</h3>
+    <p>Technologies Learned</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="glass">
+  <h2>Contact Me</h2>
+  <form id="contactForm">
+    <input type="text" placeholder="Your Name" required>
+    <input type="email" placeholder="Your Email" required>
+    <textarea placeholder="Message"></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+<footer>
+  <p>© 2026 Shahid Saleem | Next Generation Developer</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pro Tic Tac Toe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family:Segoe UI, sans-serif;
+    background:linear-gradient(135deg,#141e30,#243b55);
+    color:white;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+h1{
+    margin-top:20px;
+}
+
+#scoreboard{
+    margin:10px;
+    font-size:18px;
+}
+
+.board{
+    display:grid;
+    grid-template-columns:repeat(3,120px);
+    grid-template-rows:repeat(3,120px);
+    gap:5px;
+    margin:20px;
+}
+
+.cell{
+    background:#1f2a40;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:50px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.cell:hover{
+    background:#2d3f60;
+}
+
+.winner{
+    background:#00c6ff !important;
+    color:black;
+}
+
+button{
+    padding:8px 15px;
+    margin:5px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    background:#00c6ff;
+    color:white;
+}
+
+#status{
+    font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<h1>❌⭕ Pro Tic Tac Toe</h1>
+
+<div id="scoreboard">
+    Player X: <span id="scoreX">0</span> |
+    Player O: <span id="scoreO">0</span>
+</div>
+
+<div class="board" id="board"></div>
+
+<div id="status">Turn: Player X</div>
+
+<div>
+    <button onclick="restartGame()">Restart</button>
+    <button onclick="goBack()">Back</button>
+</div>
+
+<script>
+const boardEl=document.getElementById("board");
+let board=["","","","","","","","",""];
+let currentPlayer="X";
+let gameActive=true;
+let scoreX=0;
+let scoreO=0;
+
+const winPatterns=[
+[0,1,2],[3,4,5],[6,7,8],
+[0,3,6],[1,4,7],[2,5,8],
+[0,4,8],[2,4,6]
+];
+
+function createBoard(){
+boardEl.innerHTML="";
+board.forEach((cell,index)=>{
+let div=document.createElement("div");
+div.classList.add("cell");
+div.dataset.index=index;
+div.innerText=cell;
+div.onclick=()=>handleMove(index);
+boardEl.appendChild(div);
+});
+}
+
+function handleMove(index){
+if(board[index]!=="" || !gameActive) return;
+
+board[index]=currentPlayer;
+checkResult();
+currentPlayer=currentPlayer==="X"?"O":"X";
+updateStatus();
+createBoard();
+}
+
+function checkResult(){
+for(let pattern of winPatterns){
+let [a,b,c]=pattern;
+if(board[a] && board[a]===board[b] && board[a]===board[c]){
+highlightWin(pattern);
+gameActive=false;
+document.getElementById("status").innerText=
+"Player "+board[a]+" Wins!";
+if(board[a]==="X"){
+scoreX++;
+document.getElementById("scoreX").innerText=scoreX;
+}else{
+scoreO++;
+document.getElementById("scoreO").innerText=scoreO;
+}
+return;
+}
+}
+
+if(!board.includes("")){
+gameActive=false;
+document.getElementById("status").innerText="It's a Draw!";
+}
+}
+
+function highlightWin(pattern){
+const cells=document.querySelectorAll(".cell");
+pattern.forEach(i=>{
+cells[i].classList.add("winner");
+});
+}
+
+function updateStatus(){
+if(gameActive){
+document.getElementById("status").innerText=
+"Turn: Player "+currentPlayer;
+}
+}
+
+function restartGame(){
+board=["","","","","","","","",""];
+gameActive=true;
+currentPlayer="X";
+updateStatus();
+createBoard();
+}
+
+function goBack(){
+window.location.href="../index.html";
+}
+
+createBoard();
+</script>
+
+</body>
+</html>

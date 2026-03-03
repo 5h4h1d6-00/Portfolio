@@ -1,0 +1,370 @@
+/* ============================= */
+/* 🔥 FIRE THEME LOADER         */
+/* ============================= */
+
+#loader{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    background: radial-gradient(circle at center, #1a0000 0%, #000000 80%);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:10000;
+    overflow:hidden;
+    transition:opacity 1s ease, visibility 1s ease;
+}
+
+/* ============================= */
+/* 🔥 FIRE WORLD LOADER         */
+/* ============================= */
+
+.world-icon{
+    font-size:120px;       /* BIG icon */
+    margin-bottom:30px;
+    animation: rotateWorld 6s linear infinite, glowWorld 2s ease-in-out infinite alternate;
+    filter:hue-rotate(0deg);
+}
+
+/* 🌍 Rotate Animation */
+
+@keyframes rotateWorld{
+    from{ transform:rotate(0deg); }
+    to{ transform:rotate(360deg); }
+}
+
+/* 🔥 Red Fire Glow Effect */
+
+@keyframes glowWorld{
+    0%{
+        filter: drop-shadow(0 0 15px red) drop-shadow(0 0 30px orange);
+        transform:scale(1);
+    }
+    100%{
+        filter: drop-shadow(0 0 30px #ff0000) drop-shadow(0 0 60px #ff3300);
+        transform:scale(1.1);
+    }
+}
+
+/* Make Emoji Red Style */
+
+.world-icon{
+    color:#ff0000;
+}
+
+/* 🔥 Glowing Burning Text */
+
+#loader h1{
+    font-size:32px;
+    letter-spacing:4px;
+    text-align:center;
+    background: linear-gradient(90deg,#ffcc00,#ff3300,#ff0000,#ff6600);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation: fireText 1.5s infinite alternate;
+    z-index:2;
+}
+
+@keyframes fireText{
+    0%{
+        text-shadow:0 0 10px #ff0000,
+                    0 0 20px #ff3300,
+                    0 0 40px #ff6600;
+        transform:scale(1);
+    }
+    100%{
+        text-shadow:0 0 20px #ff6600,
+                    0 0 40px #ff0000,
+                    0 0 60px #ff3300;
+        transform:scale(1.05);
+    }
+}
+
+/* Hide Animation */
+
+#loader.hide{
+    opacity:0;
+    visibility:hidden;
+}
+
+/* Glow Animation */
+
+@keyframes loaderGlow{
+    0%{ text-shadow:0 0 10px #00b4d8; }
+    100%{ text-shadow:0 0 25px #0077b6; }
+}
+
+
+/* ============================= */
+/* 🔥 LEGENDARY FIRE EDITION 🔥 */
+/* ============================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap');
+
+:root{
+  --bg-dark:#050505;
+  --bg-light:#f5f5f5;
+  --primary:#ff3c00;
+  --secondary:#ffae00;
+  --neon:#ff6a00;
+  --text-light:#ffffff;
+  --glass:rgba(255,255,255,0.06);
+}
+
+/* GLOBAL RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--bg-dark);
+  color:var(--text-light);
+  overflow-x:hidden;
+  scroll-behavior:smooth;
+}
+
+/* 🔥 FIRE ANIMATED BACKGROUND */
+body::before{
+  content:"";
+  position:fixed;
+  width:200%;
+  height:200%;
+  top:-50%;
+  left:-50%;
+  background:radial-gradient(circle at 20% 20%, #ff3c00, transparent 40%),
+             radial-gradient(circle at 80% 30%, #ffae00, transparent 40%),
+             radial-gradient(circle at 50% 80%, #ff0000, transparent 40%);
+  animation:fireMove 12s linear infinite alternate;
+  z-index:-2;
+  filter:blur(120px);
+  opacity:0.6;
+}
+
+@keyframes fireMove{
+  0%{transform:translate(0,0) rotate(0deg);}
+  100%{transform:translate(-10%,10%) rotate(15deg);}
+}
+
+/* 🌍 ROTATING WORLD ORB */
+.world{
+  position:absolute;
+  top:100px;
+  right:100px;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, #ffae00, #800000);
+  box-shadow:0 0 50px #ff3c00;
+  animation:rotateWorld 15s linear infinite;
+}
+
+@keyframes rotateWorld{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+/* HEADER */
+header{
+  position:sticky;
+  top:0;
+  padding:20px 60px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  backdrop-filter:blur(20px);
+  background:rgba(0,0,0,0.4);
+  z-index:1000;
+}
+
+.logo{
+  font-family:'Orbitron',sans-serif;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:3px;
+  color:var(--secondary);
+  text-shadow:0 0 10px #ff3c00;
+  animation:flicker 2s infinite alternate;
+}
+
+@keyframes flicker{
+  from{opacity:0.7;}
+  to{opacity:1;}
+}
+
+/* NAV LINKS */
+nav a{
+  color:white;
+  text-decoration:none;
+  margin-left:25px;
+  font-weight:600;
+  position:relative;
+}
+
+nav a::after{
+  content:"";
+  position:absolute;
+  bottom:-5px;
+  left:0;
+  width:0%;
+  height:2px;
+  background:var(--primary);
+  transition:0.4s;
+}
+
+nav a:hover::after{
+  width:100%;
+}
+
+/* HERO SECTION */
+.hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.hero h2{
+  font-size:60px;
+  font-family:'Orbitron';
+  background:linear-gradient(90deg,#ffae00,#ff3c00);
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:slideUp 1.5s ease forwards;
+}
+
+.hero p{
+  margin-top:20px;
+  font-size:22px;
+  letter-spacing:2px;
+  opacity:0.8;
+  animation:fadeIn 2s ease forwards;
+}
+
+@keyframes slideUp{
+  from{transform:translateY(100px);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+/* GLASS SECTIONS */
+.glass{
+  margin:60px auto;
+  width:85%;
+  padding:50px;
+  background:var(--glass);
+  backdrop-filter:blur(20px);
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 0 40px rgba(255,60,0,0.3);
+  transition:0.5s;
+}
+
+.glass:hover{
+  transform:translateY(-10px);
+  box-shadow:0 0 80px rgba(255,60,0,0.6);
+}
+
+/* SKILL BARS FIRE EFFECT */
+.bar{
+  background:#222;
+  height:10px;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.bar div{
+  height:100%;
+  background:linear-gradient(90deg,#ff0000,#ffae00);
+  box-shadow:0 0 20px #ff3c00;
+  animation:fillBar 2s ease forwards;
+}
+
+@keyframes fillBar{
+  from{width:0;}
+}
+
+/* PROJECT CARDS */
+.card{
+  background:rgba(0,0,0,0.6);
+  padding:25px;
+  border-radius:20px;
+  transition:0.5s;
+  transform-style:preserve-3d;
+  perspective:1000px;
+}
+
+.card:hover{
+  transform:rotateY(10deg) rotateX(5deg) scale(1.05);
+  box-shadow:0 0 60px #ff3c00;
+}
+
+/* BUTTONS FIRE STYLE */
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(90deg,#ff0000,#ffae00);
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.4s;
+}
+
+button:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 30px #ff3c00;
+}
+
+/* CONTACT FORM */
+form input, form textarea{
+  width:100%;
+  margin:15px 0;
+  padding:15px;
+  border-radius:10px;
+  border:none;
+  background:rgba(255,255,255,0.1);
+  color:white;
+}
+
+form input:focus, form textarea:focus{
+  outline:none;
+  box-shadow:0 0 20px #ff3c00;
+}
+
+/* SCROLL BAR */
+#scrollBar{
+  position:fixed;
+  top:0;
+  left:0;
+  height:5px;
+  background:linear-gradient(90deg,#ff0000,#ffae00);
+  width:0%;
+  z-index:9999;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:40px;
+  background:black;
+  font-size:14px;
+  letter-spacing:2px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero h2{font-size:35px;}
+  header{padding:20px;}
+}
